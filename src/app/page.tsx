@@ -1,5 +1,6 @@
 import ConnectButton from "@/components/ConnectButton";
 import NotificationModule from "@/components/NotificationModule";
+import NotificationButton from "@/components/NotificationButton";
 
 export default function Home() {
 
@@ -9,6 +10,7 @@ export default function Home() {
                 Lazy LP
                 <ConnectButton/>
                 <NotificationModule/>
+                <NotificationButton/>
             </div>
         </main>
     );
