@@ -9,6 +9,7 @@ import {config} from "@/config";
 import {headers} from "next/headers";
 import {cookieToInitialState} from "wagmi";
 import {cn} from "@/lib/utils";
+import Navbar from "@/components/ui/nav-menu";
 
 export const metadata: Metadata = {
     title: "Lazy LP",
@@ -40,7 +41,9 @@ export default function RootLayout({
                 defaultTheme="system"
                 enableSystem
                 disableTransitionOnChange
-            >{children}
+            >
+                <Navbar/>
+                {children}
             </ThemeProvider>
         </Web3ModalProvider>
         </body>
