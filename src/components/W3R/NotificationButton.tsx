@@ -12,7 +12,7 @@ const NotifyButton: React.FC = () => {
 
     const handleNotify = async () => {
         if (!address) {
-            alert('Please connect your wallet first');
+                alert('Please connect your wallet first');
             return;
         }
 
