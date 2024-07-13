@@ -1,17 +1,22 @@
-import React, {useEffect, useState} from "react";
-import {AgCharts} from "ag-charts-react";
-import {AgChartOptions, AgChartTheme} from "ag-charts-community";
+import React, { useEffect, useState } from "react";
+import { AgCharts } from "ag-charts-react";
+import { AgChartOptions, AgChartTheme } from "ag-charts-community";
 
-// Assuming getData function is modified accordingly or replaced here
+// Modified getData function to reflect fee collection logic
 const getData = () => {
     const data = [];
     const today = new Date();
+    let feeType1 = 0;
+    let feeType2 = 100;  // Only increases once
+
     for (let i = 13; i >= 0; i--) {
         const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
+        feeType1 += 100;  // Increases by 100 each day
+
         data.push({
             date: date,
-            loanType1: Math.random() * 5 + 10,  // Random APR between 10% and 15%
-            loanType2: Math.random() * 5 + 5,   // Random APR between 5% and 10%
+            feeType1: feeType1,
+            feeType2: i === 13 ? feeType2 : feeType2 // feeType2 remains the same after the first entry
         });
     }
     return data;
@@ -21,19 +26,18 @@ let myTheme: AgChartTheme = {
     palette: {
         fills: ["#B9FF30", "#AF6DEA"]
     },
+
 };
 
 export const ChartExample = () => {
     const [options, setOptions] = useState<AgChartOptions>({
         theme: myTheme,
         title: {
-            text: "APR Comparison Over Last 14 Days",
+            text: "Fees Collected Over Last 14 Days",
         },
         background: {
             fill: 'rgba(35, 35, 36, 1)'
-
         },
-
         animations: {
             enabled: true,
             easing: 'ease-in-out',
@@ -42,43 +46,42 @@ export const ChartExample = () => {
         data: getData(),
         series: [
             {
-                // @ts-ignore
+                //@ts-ignore
                 type: "line",
                 xKey: "date",
-                yKey: "loanType1",
-                yName: "Loan Type 1 APR",
+                yKey: "feeType1",
+                yName: "Lazy Peggy",
             },
             {
-                // @ts-ignore
+                //@ts-ignore
                 type: "line",
                 xKey: "date",
-                yKey: "loanType2",
-                yName: "Loan Type 2 APR",
+                yKey: "feeType2",
+                yName: "Others",
             },
         ],
         axes: [
             {
-                // @ts-ignore
+                //@ts-ignore
                 type: 'time',
                 position: 'bottom',
-                title: {text: 'Date'},
-                // @ts-ignore
-                tick: {count: 'd'},
+                title: { text: 'Date' },
+                //@ts-ignore
+                tick: { count: 'd' },
                 label: {
                     formatter: function (params) {
-                        // Formatting the date as "Month, Day"
-                        return `${params.value.toLocaleDateString('en-US', {month: 'short', day: 'numeric'})}`;
+                        return `${params.value.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
                     }
                 }
             },
             {
-                // @ts-ignore
+                //@ts-ignore
                 type: 'number',
                 position: 'left',
-                title: {text: 'APR (%)'},
+                title: { text: 'Fees Collected ($)' },
                 label: {
                     formatter: function (params) {
-                        return `${params.value}%`;
+                        return `$${params.value}`;
                     }
                 }
             }
@@ -93,5 +96,5 @@ export const ChartExample = () => {
         }));
     }, []);
 
-    return <AgCharts options={options}/>;
+    return <AgCharts options={options} />;
 };

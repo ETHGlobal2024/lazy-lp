@@ -191,7 +191,6 @@ export default function Main() {
                     onGoToDashboard={handleGoToDashboard}
                 />
             )}
-
         </main>
     );
 }
