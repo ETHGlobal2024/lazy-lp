@@ -56,12 +56,12 @@ const Dashboard = () => {
                                         type="number"
                                         value={ethAmount}
                                         onChange={(e) => setEthAmount(Number(e.target.value))}
-                                        className="bg-transparent text-4xl font-bold outline-none py-8 w-3/4"
+                                        className="bg-transparent text-4xl font-normal outline-none py-6 w-3/4"
                                         placeholder="0"
                                         step={0.001}
                                     />
                                 </div>
-                                <div className="flex items-center bg-neutral-600 rounded-md p-1.5 -translate-y-12">
+                                <div className="flex items-center bg-neutral-600 rounded-md p-1.5 -translate-y-10">
                                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <rect width="32" height="32" rx="8" fill="#627EEA"/>
@@ -96,12 +96,12 @@ const Dashboard = () => {
                                         </defs>
                                     </svg>
 
-                                    <span className="text-neutral-200 font-semibold ml-2">ETH</span>
+                                    <span className="text-neutral-400 font-normal ml-2">ETH</span>
                                 </div>
                             </div>
 
                             <div className="relative flex justify-center -translate-y-5">
-                                <div className="absolute bg-neutral-800 border-background border-4 p-1 rounded">
+                                <div className="absolute bg-neutral-800 border-background border-4 p-1 rounded-lg">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none"
                                          viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -117,11 +117,11 @@ const Dashboard = () => {
                                         type="number"
                                         value={ezethAmount}
                                         readOnly
-                                        className="bg-transparent text-4xl font-bold outline-none py-8 w-3/4"
+                                        className="bg-transparent text-4xl font-normal outline-none py-6 w-3/4"
                                         placeholder="0"
                                     />
                                 </div>
-                                <div className="flex items-center bg-neutral-600 rounded-md p-1.5 -translate-y-12">
+                                <div className="flex items-center bg-neutral-600 rounded-md p-1.5 -translate-y-10">
                                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <rect x="0.695652" y="0.695652" width="30.6087" height="30.6087" rx="7.30435"
@@ -158,7 +158,7 @@ const Dashboard = () => {
                                             </clipPath>
                                         </defs>
                                     </svg>
-                                    <span className="text-neutral-200 font-semibold ml-2">ezETH</span>
+                                    <span className="text-neutral-400 font-normal ml-2">ezETH</span>
                                 </div>
                             </div>
                             {
