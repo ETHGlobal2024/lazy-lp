@@ -10,8 +10,6 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {State, WagmiProvider} from 'wagmi'
 
 import {zircuitTestnet} from 'viem/chains'
-import {cn} from "@/lib/utils";
-import {useTheme} from "next-themes";
 
 // Setup queryClient
 const queryClient = new QueryClient()

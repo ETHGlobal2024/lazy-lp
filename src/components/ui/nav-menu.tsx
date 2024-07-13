@@ -11,14 +11,6 @@ const Navbar: React.FC = () => {
             <p className="text-2xl font-bold">
                 LAZY PEGGY
             </p>
-            <div
-                className="absolute left-1/2 transform -translate-x-1/2
-                 flex gap-8 rounded-3xl bg-foreground px-8 py-2.5 text-background">
-                <a href="/docs" className="">docs</a>
-                <a href="/trade" className="">trade</a>
-                <a href="/explore" className="">explore</a>
-                <a href="/pool" className="">pool</a>
-            </div>
             <ConnectButton/>
         </nav>
     );
