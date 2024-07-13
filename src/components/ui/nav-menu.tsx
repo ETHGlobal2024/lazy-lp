@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
         <nav className="flex justify-between items-center p-8">
             {/*TODO: Add logo*/}
             <p className="text-2xl font-bold">
-                CIRCUIT
+                LAZY PEGGY
             </p>
             <div
                 className="absolute left-1/2 transform -translate-x-1/2

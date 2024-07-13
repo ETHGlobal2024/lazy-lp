@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 
 const HistoryTable = () => {
-    const [selectedPeriod, setSelectedPeriod] = useState('24h');
+    const [selectedPeriod, setSelectedPeriod] = useState('7d');
 
     const periods = ['24h', '7d', '14d', '30d'];
 
