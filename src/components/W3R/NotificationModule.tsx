@@ -54,8 +54,7 @@ export default function NotificationModule() {
                     <div>Loading W3I Client</div>
                 ) : (
                     <div>
-                        <h1>W3I QuickStart</h1>
-                        <div className="flex flex-col">
+                        <div className="flex flex-row gap-4 justify-center items-center">
                             <button onClick={handleRegistration} disabled={isRegistered}>
                                 {isRegistered ? 'Registered' : 'Register'}
                             </button>
@@ -65,8 +64,6 @@ export default function NotificationModule() {
                             >
                                 {isSubscribed ? 'Unsubscribe' : 'Subscribe'}
                             </button>
-                            <hr/>
-                            {isSubscribed ? <Notifications/> : null}
                         </div>
                     </div>
                 )}

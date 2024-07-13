@@ -9,6 +9,7 @@ import {useAccount} from "wagmi";
 import RangeDisplay from "@/components/ui/range-display";
 import {ChartExample} from "@/components/ui/dashboard-chart";
 import {Card} from "@/components/ui/card";
+import SwapButton from "@/components/W3R/SwapButton";
 
 const Dashboard = () => {
 
@@ -197,6 +198,9 @@ const Dashboard = () => {
                             )
                             }
                         </div>
+                    </Card>
+                    <Card className="bg-background rounded-xl overflow-hidden p-2 my-2">
+                        <SwapButton/>
                     </Card>
                 </div>
             </div>
