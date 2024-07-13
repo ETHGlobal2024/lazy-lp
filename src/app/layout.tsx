@@ -1,6 +1,6 @@
 import type {Metadata} from "next";
 import "./globals.css";
-import {Inter as FontSans} from "next/font/google"
+import {League_Spartan as League} from "next/font/google"
 
 import Web3ModalProvider from '@/context'
 import {ThemeProvider} from "@/components/ui/theme-providor";
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     description: "AI powered liquidity provision",
 };
 
-const fontSans = FontSans({
+const fontSans = League({
     subsets: ["latin"],
     variable: "--font-sans",
 })
