@@ -1,34 +1,26 @@
-import {useAccount, useWriteContract} from 'wagmi'
+import {useAccount, useReadContract, useWriteContract} from 'wagmi'
 import {abi} from '@/contract/abi'
-import React from "react";
 
-function useCalculateLazyLP(): React.JSX.Element {
-    const {writeContract} = useWriteContract()
+function useCalculateEzETH(): number {
+    // const readContract = useReadContract()
     const {address} = useAccount()
 
-    if (!address) {
-        return (
-            <button onClick={() => alert('Please connect your wallet first')}>
-                Transfer
-            </button>
-        )
-    }
+    if (!address) throw new Error('Please connect your wallet')
 
-    return (
-        <button
-            onClick={() =>
-                writeContract({
-                    abi,
-                    address,
-                    functionName: 'TBD',
-                    args: [],
-                })
-            }
-        >
-            Transfer
-        </button>
-        //     Write contract should return the ranges of the best possible outcome
-        //     for the user
-        //     and we use this to calculate the ezEth
-    )
+    //Get min max range from contract
+
+    // Calculate ezETH based on min max range and ethAmount
+
+    return 0
+
+}
+
+function useStake(): void {
+    // const {writeContract} = useWriteContract()
+    const {address} = useAccount()
+
+    if (!address) throw new Error('Please connect your wallet')
+
+    // Stake the amounts using writeContract
+
 }

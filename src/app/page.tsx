@@ -6,16 +6,19 @@ import React, {useState} from 'react';
 import {Egg, Sparkles} from 'lucide-react';
 import CustomConnectButton from "@/components/W3R/CustomConnectButton";
 import {useAccount} from "wagmi";
+import RangeDisplay from "@/components/ui/range-display";
 
 export default function Main() {
 
     const [ethAmount, setEthAmount] = useState<string>('0');
-    const [zethAmount, setZethAmount] = useState<string>('0');
+    const [ezethAmount, setEZethAmount] = useState<string>('0');
+    const [isCalculated, setIsCalculated] = useState<boolean>(false);
     const account = useAccount();
 
     // TODO: Implement actual zETH calculation logic
-    const calculateZEth = (ethAmount: string): string => {
+    const calculateEZEth = (ethAmount: string): string => {
         // Placeholder calculation - replace with actual logic
+        setIsCalculated(true);
         return ethAmount;
     };
 
@@ -25,7 +28,7 @@ export default function Main() {
             {/*<NotificationButton/>*/}
             <h1 className="text-3xl font-bold text-center">Deposit anytime, <br/> anywhere</h1>
 
-            <div className="w-full max-w-md flex flex-col justify-center items-center self-center gap-1">
+            <div className="w-full max-w-lg flex flex-col justify-center items-center self-center gap-1">
                 <div className="bg-neutral-800 rounded-lg p-4 flex justify-between items-center w-full">
                     <div>
                         <p className="text-gray-400 text-sm">Deposit</p>
@@ -58,7 +61,7 @@ export default function Main() {
                         <p className="text-gray-400 text-sm">Deposit</p>
                         <input
                             type="number"
-                            value={zethAmount}
+                            value={ezethAmount}
                             readOnly
                             className="bg-transparent text-2xl font-bold outline-none py-4"
                             placeholder="0"
@@ -66,13 +69,18 @@ export default function Main() {
                     </div>
                     <div className="flex items-center bg-neutral-600 rounded px-3 py-1">
                         <Egg size={20} className="text-neutral-200 mr-1"/>
-                        <span className="text-neutral-200 font-semibold">zETH</span>
+                        <span className="text-neutral-200 font-semibold">ezETH</span>
                     </div>
                 </div>
                 {
-                    account.isConnected ? (
+                    !account.isConnected ? (
+                        <CustomConnectButton
+                            className="w-full bg-primary hover:brightness-90
+                             font-bold my-1 py-3 px-4 rounded-lg transition duration-300"
+                        />
+                    ) : !isCalculated ? (
                         <button onClick={() => {
-                            setZethAmount(calculateZEth(ethAmount + 10));
+                            setEZethAmount(calculateEZEth(ethAmount + 10));
                         }}
                                 className="w-full bg-neutral-500 hover:bg-neutral-600 font-bold
                              my-1 py-3 px-4 rounded-lg transition duration-300 flex flex-row justify-center items-center"
@@ -80,13 +88,23 @@ export default function Main() {
                             <Sparkles size={20} className="text-white mr-2"/>
                             AI Request
                         </button>
-                    ) : (
-                        <CustomConnectButton
-                            //TODO: Fix hover color
-                            className="w-full bg-primary hover:brightness-90
-                             font-bold my-1 py-3 px-4 rounded-lg transition duration-300"
-                        />
-                    )
+                    ) : null
+                }
+                {isCalculated && (
+                    <RangeDisplay
+                        ethRange={25}
+                        ezethRange={75}
+                        estApr={320}
+                        onRecalculate={() => {
+                            setEZethAmount(calculateEZEth(ethAmount + 20));
+                        }
+                        }
+                        onConfirmStake={() => {
+                            alert('Stake confirmed');
+                        }
+                        }
+                    />
+                )
                 }
             </div>
             <p className="text-gray-400 text-md text-center mt-2">
