@@ -23,7 +23,7 @@ export default function Main() {
 
     const router = useRouter();
 
-    const price = usePrice(Contracts["WETH"], Contracts["EETH"]);
+    const price = usePrice(Contracts["EETH"], Contracts["WETH"]);
     console.log("usePrice", price);
 
     // Test
