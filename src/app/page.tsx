@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Sparkles} from 'lucide-react';
 import CustomConnectButton from "@/components/W3R/CustomConnectButton";
 import {useAccount} from "wagmi";
@@ -8,7 +8,7 @@ import {Card} from "@/components/ui/card";
 import RangeDisplay from "@/components/ui/range-display";
 import SuccessStakeModal from "@/components/modals/SuccesStakeModal";
 import {useRouter} from "next/navigation";
-import {useAddLiquidity} from "../contract/useAddLiquidity";
+import {useAddLiquidity, usePoolInfo} from "../contract/useAddLiquidity";
 import {Contracts} from "../contract/abi";
 import {usePrice} from "../contract/usePrice";
 
@@ -22,31 +22,25 @@ export default function Main() {
 
     const router = useRouter();
 
+    const {
+        position,
+        amountB
+    } = usePoolInfo(Contracts["WETH"], Contracts["EETH"], 0.8, 1.1, BigInt(ethAmount * 10 ** 18));
+
+    useMemo(() => {
+        setEZethAmount(Number(amountB / BigInt(10 ** 18)));
+        console.log("useEffect", amountB);
+    }, [ethAmount]);
+
     const price = usePrice(Contracts["WETH"], Contracts["EETH"]);
     console.log("usePrice", price);
 
-    // Test
-    // const {
-    //     addLiquidity, step, depositResult
-    // } = useAddLiquidity(
-    //   Contracts["WETH"], Contracts["EETH"],
-    //   0.9, 1.1, BigInt(1 * 10 ** 17)
-    // );
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         addLiquidity();
-    //     }, 5000);
-    // }, [])
-
-    // console.log("useAddLiquidity", {step, depositResult})
-
-    // TODO: Implement actual zETH calculation logic
-    const calculateEZEth = (ethAmount: number): number => {
-        // Placeholder calculation - replace with actual logic
-        setIsCalculated(true);
-        //ezETH = ETH * 4
-        return ethAmount * 4;
-    };
+    const {
+        addLiquidity, step, depositResult
+    } = useAddLiquidity(
+        Contracts["WETH"], Contracts["EETH"],
+        0.9, 1.1, BigInt(ethAmount * 10 ** 18)
+    );
 
     const handleGoToDashboard = () => {
         setShowModal(false);
@@ -69,6 +63,7 @@ export default function Main() {
                                 className="bg-transparent text-4xl font-normal outline-none py-6 w-3/4"
                                 placeholder="0"
                                 step={0.001}
+                                min={0}
                             />
                         </div>
                         <div className="flex items-center bg-neutral-600 rounded-md p-1.5 -translate-y-10">
@@ -179,10 +174,11 @@ export default function Main() {
                             />
                         ) : !isCalculated ? (
                             <button onClick={() => {
-                                setEZethAmount(calculateEZEth(ethAmount));
+                                setIsCalculated(true)
                             }}
                                     className="w-full bg-neutral-500 hover:bg-neutral-600 font-bold
                              my-1 py-3 px-4 rounded-lg transition duration-300 flex flex-row justify-center items-center"
+                                    disabled={ethAmount === 0}
                             >
                                 <Sparkles size={20} className="text-white mr-2"/>
                                 AI Request
@@ -195,11 +191,11 @@ export default function Main() {
                             ezethRange={75}
                             estApr={320}
                             onRecalculate={() => {
-                                setEZethAmount(calculateEZEth(ethAmount));
+
                             }
                             }
                             onConfirmStake={() => {
-                                setShowModal(true);
+                                addLiquidity().then(r => setShowModal(true));
                             }
                             }
                         />
