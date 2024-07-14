@@ -42,6 +42,12 @@ export default function Main() {
         0.9, 1.1, BigInt(ethAmount * 10 ** 18)
     );
 
+    useEffect(() => {
+        if (step === 4) {
+            setShowModal(true)
+        }
+    }, [step]);
+
     const handleGoToDashboard = () => {
         setShowModal(false);
         router.push('/dashboard');
@@ -198,7 +204,7 @@ export default function Main() {
                             }
                             }
                             onConfirmStake={() => {
-                                addLiquidity().then(() => setShowModal(true));
+                                addLiquidity()
                             }
                             }
                         />
