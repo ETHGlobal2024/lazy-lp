@@ -44,7 +44,7 @@ export default function Main() {
 
     return (
         <main className="container flex justify-center gap-8 flex-col my-20">
-            <h1 className="text-4xl font-normal text-center">Deposit anytime, <br/> anywhere</h1>
+            <h1 className="text-4xl font-normal text-center">Passive position for lazy capital <br/> only one click</h1>
             <Card className="bg-background rounded-xl overflow-hidden p-2 max-w-lg self-center">
                 <div className="w-full max-w-lg flex flex-col justify-center items-center self-center gap-1">
                     <div className="bg-neutral-800 rounded-lg p-4 flex justify-between items-center w-full">

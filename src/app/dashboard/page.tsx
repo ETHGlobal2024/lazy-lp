@@ -47,8 +47,8 @@ const Dashboard = () => {
                     <div className="flex flex-grow flex-col">
                         <div className="grid grid-cols-3 gap-2">
                             <DashboardMetricCard title="CURRENT PRICE" value={`$${formattedPrice}`}/>
-                            <DashboardMetricCard title="LOWER LIMIT" value="$0.9803"/>
-                            <DashboardMetricCard title="UPPER LIMIT" value="$0.9803"/>
+                            {/*<DashboardMetricCard title="LOWER LIMIT" value="$0.9803"/>*/}
+                            {/*<DashboardMetricCard title="UPPER LIMIT" value="$0.9803"/>*/}
                         </div>
                         <div className="my-2 mx-1">
                             <ChartExample/>
