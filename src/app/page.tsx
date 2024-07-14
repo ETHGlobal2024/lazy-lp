@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Sparkles} from 'lucide-react';
 import CustomConnectButton from "@/components/W3R/CustomConnectButton";
 import {useAccount} from "wagmi";
@@ -8,6 +8,10 @@ import {Card} from "@/components/ui/card";
 import RangeDisplay from "@/components/ui/range-display";
 import SuccessStakeModal from "@/components/modals/SuccesStakeModal";
 import {useRouter} from "next/navigation";
+import {useAddLiquidity, usePoolInfo} from "../contract/useAddLiquidity";
+import {Contracts} from "../contract/abi";
+import {usePrice} from "../contract/usePrice";
+import {useSwap} from "../contract/useSwap";
 
 export default function Main() {
 
@@ -19,22 +23,37 @@ export default function Main() {
 
     const router = useRouter();
 
-    // TODO: Implement actual zETH calculation logic
-    const calculateEZEth = (ethAmount: number): number => {
-        // Placeholder calculation - replace with actual logic
-        setIsCalculated(true);
-        //ezETH = ETH * 4
-        return ethAmount * 4;
-    };
+    const {
+        position,
+        amountB
+    } = usePoolInfo(Contracts["WETH"], Contracts["EETH"], 0.8, 1.1, BigInt(ethAmount * 10 ** 18));
+
+    useMemo(() => {
+        setEZethAmount(Number(amountB / BigInt(10 ** 18)));
+        console.log("useEffect", amountB);
+    }, [ethAmount]);
+
+    const price = usePrice(Contracts["WETH"], Contracts["EETH"]);
+    console.log("usePrice", price);
+
+    const {
+        addLiquidity, step, depositResult
+    } = useAddLiquidity(
+        Contracts["WETH"], Contracts["EETH"],
+        0.9, 1.1, BigInt(ethAmount * 10 ** 18)
+    );
 
     const handleGoToDashboard = () => {
         setShowModal(false);
         router.push('/dashboard');
     }
 
+    const {swap} = useSwap(
+        Contracts["WETH"], Contracts["EETH"], BigInt(1 * 10 ** 18)
+    );
+
     return (
         <main className="container flex justify-center gap-8 flex-col my-20">
-
             <h1 className="text-4xl font-normal text-center">Deposit anytime, <br/> anywhere</h1>
             <Card className="bg-background rounded-xl overflow-hidden p-2 max-w-lg self-center">
                 <div className="w-full max-w-lg flex flex-col justify-center items-center self-center gap-1">
@@ -48,6 +67,7 @@ export default function Main() {
                                 className="bg-transparent text-4xl font-normal outline-none py-6 w-3/4"
                                 placeholder="0"
                                 step={0.001}
+                                min={0}
                             />
                         </div>
                         <div className="flex items-center bg-neutral-600 rounded-md p-1.5 -translate-y-10">
@@ -158,10 +178,11 @@ export default function Main() {
                             />
                         ) : !isCalculated ? (
                             <button onClick={() => {
-                                setEZethAmount(calculateEZEth(ethAmount));
+                                setIsCalculated(true)
                             }}
                                     className="w-full bg-neutral-500 hover:bg-neutral-600 font-bold
                              my-1 py-3 px-4 rounded-lg transition duration-300 flex flex-row justify-center items-center"
+                                    disabled={ethAmount === 0}
                             >
                                 <Sparkles size={20} className="text-white mr-2"/>
                                 AI Request
@@ -174,11 +195,11 @@ export default function Main() {
                             ezethRange={75}
                             estApr={320}
                             onRecalculate={() => {
-                                setEZethAmount(calculateEZEth(ethAmount));
+
                             }
                             }
                             onConfirmStake={() => {
-                                setShowModal(true);
+                                addLiquidity().then(r => setShowModal(true));
                             }
                             }
                         />
