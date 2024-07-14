@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Sparkles} from 'lucide-react';
 import CustomConnectButton from "@/components/W3R/CustomConnectButton";
 import {useAccount} from "wagmi";
@@ -8,6 +8,8 @@ import {Card} from "@/components/ui/card";
 import RangeDisplay from "@/components/ui/range-display";
 import SuccessStakeModal from "@/components/modals/SuccesStakeModal";
 import {useRouter} from "next/navigation";
+import {useAddLiquidity} from "../contract/useAddLiquidity";
+import {Contracts} from "../contract/abi";
 
 export default function Main() {
 
@@ -18,6 +20,21 @@ export default function Main() {
     const account = useAccount();
 
     const router = useRouter();
+
+    // Test
+    const {
+        addLiquidity, step, depositResult
+    } = useAddLiquidity(
+      Contracts["WETH"], Contracts["EETH"],
+      0.9, 1.1, BigInt(1 * 10 ** 17)
+    );
+    useEffect(() => {
+        setTimeout(() => {
+            addLiquidity();
+        }, 5000);
+    }, [])
+
+    console.log("useAddLiquidity", {step, depositResult})
 
     // TODO: Implement actual zETH calculation logic
     const calculateEZEth = (ethAmount: number): number => {
