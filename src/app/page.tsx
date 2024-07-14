@@ -28,8 +28,7 @@ export default function Main() {
     } = usePoolInfo(Contracts["WETH"], Contracts["EETH"], 0.8, 1.1, BigInt(ethAmount * 10 ** 18));
 
     useMemo(() => {
-        setEZethAmount(Number(amountB / BigInt(10 ** 18)));
-        console.log("useEffect", amountB);
+        setEZethAmount(Number(amountB) / (10 ** 18));
     }, [ethAmount]);
 
     const {
