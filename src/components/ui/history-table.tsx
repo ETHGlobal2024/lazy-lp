@@ -6,8 +6,8 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card';
 interface HistoryData {
     timestamp: number;
     oldRange: [number, number];
-    currentRange: [number, number];
-    price: string;
+    newRange: [number, number];
+    triggerPrice: string;
 }
 
 // interface ApiResponse {
@@ -32,6 +32,7 @@ const HistoryTable = () => {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const result: HistoryData[] = await response.json();
+                console.log("result", result);
                 setHistoryData(result);
             } catch (error) {
                 console.error('Error:', error);
@@ -79,7 +80,7 @@ const HistoryTable = () => {
                 <table className="w-full">
                     <thead>
                     <tr className="bg-neutral-800 text-neutral-400">
-                        <th className="py-2 px-4 text-left">Price (USD)</th>
+                        <th className="py-2 px-4 text-left">Price (ETH)</th>
                         <th className="py-2 px-4 text-left">Position Time</th>
                         <th className="py-2 px-4 text-left">Current Range</th>
                         <th className="py-2 px-4 text-left">Old Range ({selectedPeriod})</th>
@@ -88,9 +89,9 @@ const HistoryTable = () => {
                     <tbody>
                     {historyData.map((row, index) => (
                         <tr key={index} className="border-t border-neutral-800">
-                            <td className="py-3 px-4">{row.price}</td>
+                            <td className="py-3 px-4">{row.triggerPrice}</td>
                             <td className="py-3 px-4">{formatTimestamp(row.timestamp)}</td>
-                            <td className="py-3 px-4">{formatRange(row.currentRange)}</td>
+                            <td className="py-3 px-4">{formatRange(row.newRange)}</td>
                             <td className="py-3 px-4">{formatRange(row.oldRange)}</td>
                         </tr>
                     ))}
