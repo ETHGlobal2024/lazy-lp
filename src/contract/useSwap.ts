@@ -87,6 +87,6 @@ export function useSwap(
   }, [depositResult]);
 
   return {
-    swap,
+    swap, step, depositResult
   }
 }

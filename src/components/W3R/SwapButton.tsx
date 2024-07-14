@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAccount} from 'wagmi';
 import {ApiResponse, Notification} from '@/types';
 import {sendNotification} from '@/lib/notifications';
@@ -13,9 +13,27 @@ const SwapButton = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState<ApiResponse | null>(null);
 
-    const {swap} = useSwap(
+    const {swap, step, depositResult} = useSwap(
         Contracts["WETH"], Contracts["EETH"], BigInt(1 * 10 ** 18)
     );
+
+    const price = usePrice(Contracts["WETH"], Contracts["EETH"]);
+    console.log("usePrice", price);
+
+    useEffect(() => {
+        const low = Number(price) * 0.90
+        const high = Number(price) * 1.10
+
+        if (step === 3) {
+            handleNotify({
+                type: '3d671a2f-1277-46ad-b2e8-aa58d308be0f',
+                title: 'Rebalance Alert',
+                body: `We changed the allocation of your portfolio. Your new allocation is ${low} - ${high}`,
+                url: 'https://lazy-lp.vercel.app/'
+            });
+        }
+
+    }, [price, step]);
 
     const handleNotify = async (notification: Notification) => {
         if (!address) {
@@ -37,33 +55,9 @@ const SwapButton = () => {
         }
     };
 
-    const price = usePrice(Contracts["WETH"], Contracts["EETH"]);
-    console.log("usePrice", price);
-
-    //Return the min and max range of the swap
-    const handleSwap = async () => {
-        await swap()
-
-        const low = Number(price) * 0.90
-        const high = Number(price) * 1.10
-
-        return [
-            low,
-            high
-        ]
-    }
-
     return (
         <button onClick={() => {
-
-            handleSwap().then(([min, max]) => {
-                handleNotify({
-                    type: '3d671a2f-1277-46ad-b2e8-aa58d308be0f',
-                    title: 'Rebalance Alert',
-                    body: `We changed the allocation of your portfolio. Your new allocation is ${min} - ${max}`,
-                    url: 'https://lazy-lp.vercel.app/'
-                })
-            })
+            swap()
         }
         } disabled={isLoading || !address}
                 className="w-full bg-neutral-500 hover:bg-neutral-600 font-bold
