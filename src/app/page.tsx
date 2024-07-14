@@ -11,6 +11,7 @@ import {useRouter} from "next/navigation";
 import {useAddLiquidity} from "../contract/useAddLiquidity";
 import {Contracts} from "../contract/abi";
 import {usePrice} from "../contract/usePrice";
+import {useSwap} from "../contract/useSwap";
 
 export default function Main() {
 
@@ -53,8 +54,16 @@ export default function Main() {
         router.push('/dashboard');
     }
 
+    const {swap} = useSwap(
+      Contracts["WETH"], Contracts["EETH"], BigInt(1 * 10 ** 18)
+    );
+
     return (
         <main className="container flex justify-center gap-8 flex-col my-20">
+
+            <button className="bg-[#333] w-[128px] m-auto" onClick={() => {
+                swap();
+            }}>Swap Once ()</button>
 
             <h1 className="text-4xl font-normal text-center">Deposit anytime, <br/> anywhere</h1>
             <Card className="bg-background rounded-xl overflow-hidden p-2 max-w-lg self-center">
