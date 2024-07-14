@@ -182,8 +182,8 @@ export default function Main() {
                     }
                     {isCalculated && (
                         <RangeDisplay
-                            ethRange={25}
-                            ezethRange={75}
+                            ethRange={(ethAmount / (ethAmount + ezethAmount)) * 100}
+                            ezethRange={(ezethAmount / (ethAmount + ezethAmount)) * 100}
                             estApr={320}
                             onRecalculate={() => {
 

@@ -33,11 +33,12 @@ export default function RangeDisplay({
                 <div className="grid grid-cols-3 gap-2 mb-4">
                     <div className="rounded-lg p-3 border border-primary-40 ">
                         <p className="text-sm mb-1 text-primary-60">ETH RANGE</p>
-                        <p className="text-4xl font-normal text-primary">{ethRange}%</p>
+                        {/*Format to no decimal places*/}
+                        <p className="text-4xl font-normal text-primary">{ethRange.toFixed(2)}%</p>
                     </div>
                     <div className="rounded-lg p-3 border border-primary-40 ">
                         <p className="text-sm mb-1 text-primary-60">EZETH RANGE</p>
-                        <p className=" text-4xl font-normal text-primary">{ezethRange}%</p>
+                        <p className=" text-4xl font-normal text-primary">{ezethRange.toFixed(2)}%</p>
                     </div>
                     <div className="rounded-lg p-3 border border-primary-40">
                         <p className="text-sm mb-1 text-primary-60">EST. APR</p>
