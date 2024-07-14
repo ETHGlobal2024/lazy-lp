@@ -10,9 +10,9 @@ interface HistoryData {
     price: string;
 }
 
-interface ApiResponse {
-    data: HistoryData[];
-}
+// interface ApiResponse {
+//     data: HistoryData[];
+// }
 
 const HistoryTable = () => {
     const [selectedPeriod, setSelectedPeriod] = useState('7d');
@@ -23,12 +23,16 @@ const HistoryTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://d727-213-214-42-42.ngrok-free.app/rebalance`);
+                const response = await fetch(`/api/rebalance`, {
+                    headers: {
+                        "ngrok-skip-browser-warning": "69420",
+                    }
+                });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                const result: ApiResponse = await response.json();
-                setHistoryData(result.data);
+                const result: HistoryData[] = await response.json();
+                setHistoryData(result);
             } catch (error) {
                 console.error('Error:', error);
             }

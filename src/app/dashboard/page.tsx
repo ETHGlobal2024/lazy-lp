@@ -209,7 +209,7 @@ const Dashboard = () => {
                                         onConfirmStake={() => {
                                             addLiquidity().then(() => {
                                                     setIsCalculated(false);
-                                                    setEthAmount(0);
+                                                    // setEthAmount(0);
                                                 }
                                             )
                                         }
