@@ -33,7 +33,7 @@ export const ChartExample = () => {
     const [options, setOptions] = useState<AgChartOptions>({
         theme: myTheme,
         title: {
-            text: "Fees Collected Over Last 14 Days",
+            text: "Fees Collected Over Last 14 Days (Simulation)",
         },
         background: {
             fill: 'rgba(35, 35, 36, 1)'
