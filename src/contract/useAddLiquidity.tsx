@@ -20,10 +20,10 @@ import {ABIs, ChainId, Contracts} from "./abi";
 import {formatUnits, parseEther} from "viem";
 import {useEffect, useState} from "react";
 
-const DefaultFee = FeeAmount.MEDIUM
-const DefaultTickSpacing = TICK_SPACINGS[DefaultFee]
-const DefaultInitialPrice = 1
-const DefaultDecimals = 18
+export const DefaultFee = FeeAmount.MEDIUM
+export const DefaultTickSpacing = TICK_SPACINGS[DefaultFee]
+export const DefaultInitialPrice = 1
+export const DefaultDecimals = 18
 
 export function number2Str(num: number): string {
     return num.toPrecision(Math.ceil(Math.log10(num)))
@@ -78,7 +78,6 @@ export function usePoolInfo(
         ]
     })
     const poolData = readResult.data
-    console.log("readResult", readResult, poolAddress)
 
     if (poolData && poolData.length === 2) {
         const liquidity = poolData[0].result as BigNumber
