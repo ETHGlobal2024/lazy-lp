@@ -1,21 +1,57 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
+
+interface HistoryData {
+    timestamp: number;
+    oldRange: [number, number];
+    currentRange: [number, number];
+    price: string;
+}
+
+interface ApiResponse {
+    data: HistoryData[];
+}
 
 const HistoryTable = () => {
     const [selectedPeriod, setSelectedPeriod] = useState('7d');
+    const [historyData, setHistoryData] = useState<HistoryData[]>([]);
 
     const periods = ['24h', '7d', '14d', '30d'];
 
-    // Sample data - replace with actual data fetching logic
-    const historyData = [
-        { price: '1.039', time: '07.13.24 12:25', currentRange: '1.035 — 1.042', oldRange: '1.035 — 1.042' },
-        { price: '1.039', time: '07.13.24 12:25', currentRange: '1.035 — 1.042', oldRange: '1.035 — 1.042' },
-        { price: '1.039', time: '07.13.24 12:25', currentRange: '1.035 — 1.042', oldRange: '1.035 — 1.042' },
-        { price: '1.039', time: '07.13.24 12:25', currentRange: '1.035 — 1.042', oldRange: '1.035 — 1.042' },
-        { price: '1.039', time: '07.13.24 12:25', currentRange: '1.035 — 1.042', oldRange: '1.035 — 1.042' },
-    ];
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`https://d727-213-214-42-42.ngrok-free.app/rebalance`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const result: ApiResponse = await response.json();
+                setHistoryData(result.data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchData();
+    }, [selectedPeriod]);
+
+    const formatTimestamp = (timestamp: number): string => {
+        const date = new Date(timestamp * 1000);
+        return date.toLocaleString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            year: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+    };
+
+    const formatRange = (range: [number, number]): string => {
+        return `${range[0].toFixed(3)} — ${range[1].toFixed(3)}`;
+    };
 
     return (
         <Card className="bg-neutral-900 text-white rounded-xl overflow-hidden">
@@ -49,9 +85,9 @@ const HistoryTable = () => {
                     {historyData.map((row, index) => (
                         <tr key={index} className="border-t border-neutral-800">
                             <td className="py-3 px-4">{row.price}</td>
-                            <td className="py-3 px-4">{row.time}</td>
-                            <td className="py-3 px-4">{row.currentRange}</td>
-                            <td className="py-3 px-4">{row.oldRange}</td>
+                            <td className="py-3 px-4">{formatTimestamp(row.timestamp)}</td>
+                            <td className="py-3 px-4">{formatRange(row.currentRange)}</td>
+                            <td className="py-3 px-4">{formatRange(row.oldRange)}</td>
                         </tr>
                     ))}
                     </tbody>
