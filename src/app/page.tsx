@@ -10,6 +10,8 @@ import SuccessStakeModal from "@/components/modals/SuccesStakeModal";
 import {useRouter} from "next/navigation";
 import {useAddLiquidity, usePoolInfo} from "@/contract/useAddLiquidity";
 import {Contracts} from "../contract/abi";
+import {usePrice} from "../contract/usePrice";
+import {useSwap} from "../contract/useSwap";
 
 export default function Main() {
 
@@ -30,6 +32,9 @@ export default function Main() {
         setEZethAmount(Number(amountB) / (10 ** 18));
     }, [ethAmount]);
 
+    const price = usePrice(Contracts["WETH"], Contracts["EETH"]);
+    console.log("usePrice", price);
+
     const {
         addLiquidity, step, depositResult
     } = useAddLiquidity(
@@ -41,6 +46,10 @@ export default function Main() {
         setShowModal(false);
         router.push('/dashboard');
     }
+
+    const {swap} = useSwap(
+        Contracts["WETH"], Contracts["EETH"], BigInt(1 * 10 ** 18)
+    );
 
     return (
         <main className="container flex justify-center gap-8 flex-col my-20">
