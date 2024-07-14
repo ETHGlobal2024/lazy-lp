@@ -134,7 +134,6 @@ export function useAddLiquidity(
     const [depositHash, setDepositHash] = useState<string>("");
 
     const {position, amountB} = usePoolInfo(tokenAAddress, tokenBAddress, priceLower, priceUpper, amountA)
-    console.log({position, amountB})
 
     const {address} = useAccount()
     const {sendTransactionAsync} = useSendTransaction();
