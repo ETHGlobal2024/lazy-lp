@@ -4,12 +4,15 @@ import DashboardMetricCard from "@/components/ui/dashboard-card";
 import HistoryTable from "@/components/ui/history-table";
 import CustomConnectButton from "@/components/W3R/CustomConnectButton";
 import {Sparkles} from "lucide-react";
-import React, {useState} from "react";
+import React, {useMemo, useState} from "react";
 import {useAccount} from "wagmi";
 import RangeDisplay from "@/components/ui/range-display";
 import {ChartExample} from "@/components/ui/dashboard-chart";
 import {Card} from "@/components/ui/card";
 import SwapButton from "@/components/W3R/SwapButton";
+import {useAddLiquidity, usePoolInfo} from "@/contract/useAddLiquidity";
+import {Contracts} from "@/contract/abi";
+import {set} from "zod";
 
 const Dashboard = () => {
 
@@ -18,14 +21,22 @@ const Dashboard = () => {
     const [isCalculated, setIsCalculated] = useState<boolean>(false);
     const account = useAccount();
 
-    // TODO: Implement actual zETH calculation logic
-    const calculateEZEth = (ethAmount: number): number => {
-        // Placeholder calculation - replace with actual logic
-        setIsCalculated(true);
-        //EZETH = ETH * 4
-        return ethAmount * 4;
+    const {
+        position,
+        amountB
+    } = usePoolInfo(Contracts["WETH"], Contracts["EETH"], 0.8, 1.1, BigInt(ethAmount * 10 ** 18));
 
-    };
+    useMemo(() => {
+        setEZethAmount(Number(amountB / BigInt(10 ** 18)));
+        console.log("useEffect", amountB);
+    }, [ethAmount]);
+
+    const {
+        addLiquidity, step, depositResult
+    } = useAddLiquidity(
+        Contracts["WETH"], Contracts["EETH"],
+        0.9, 1.1, BigInt(ethAmount * 10 ** 18)
+    );
 
     return (
         <main className="container mx-auto px-8 py-4">
@@ -169,38 +180,47 @@ const Dashboard = () => {
                              font-bold my-1 py-3 px-4 rounded-lg transition duration-300"
                                     />
                                 ) : !isCalculated ? (
-                                    <button onClick={() => {
-                                        setEZethAmount(calculateEZEth(ethAmount));
-                                    }}
-                                            className="w-full bg-neutral-500 hover:bg-neutral-600 font-bold
+                                    <div className="flex flex-row w-full gap-2">
+                                        <button onClick={() => {
+                                            setIsCalculated(true)
+                                        }}
+                                                className="w-1/2 bg-neutral-500 hover:bg-neutral-600 font-bold
                              my-1 py-3 px-4 rounded-lg transition duration-300 flex flex-row justify-center items-center"
-                                    >
-                                        <Sparkles size={20} className="text-white mr-2"/>
-                                        AI Request
-                                    </button>
+                                        >
+                                            <Sparkles size={20} className="text-white mr-2"/>
+                                            AI Request
+                                        </button>
+                                        <div className="w-1/2">
+                                            <SwapButton/>
+                                        </div>
+                                    </div>
                                 ) : null
                             }
                             {isCalculated && (
-                                <RangeDisplay
-                                    ethRange={25}
-                                    ezethRange={75}
-                                    estApr={320}
-                                    onRecalculate={() => {
-                                        setEZethAmount(calculateEZEth(ethAmount));
-                                    }
-                                    }
-                                    onConfirmStake={() => {
-                                        alert('Stake confirmed');
-                                    }
-                                    }
-                                    row={true}
-                                />
+                                <>
+                                    <SwapButton/>
+                                    <RangeDisplay
+                                        ethRange={25}
+                                        ezethRange={75}
+                                        estApr={320}
+                                        onRecalculate={() => {
+
+                                        }
+                                        }
+                                        onConfirmStake={() => {
+                                            addLiquidity().then(() => {
+                                                    setIsCalculated(false);
+                                                    setEthAmount(0);
+                                                }
+                                            )
+                                        }
+                                        }
+                                        row={true}
+                                    />
+                                </>
                             )
                             }
                         </div>
-                    </Card>
-                    <Card className="bg-background rounded-xl overflow-hidden p-2 my-2">
-                        <SwapButton/>
                     </Card>
                 </div>
             </div>

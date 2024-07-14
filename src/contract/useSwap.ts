@@ -39,10 +39,12 @@ export function useSwap(
     setStep(1)
     const hash1 = await writeContractAsync({
       abi: ABIs["MockERC20"],
+      //@ts-ignore
       address: tokenInAddress,
       functionName: "approve",
       args: [
         Contracts["SwapRouter02"],
+        //@ts-ignore
         amountIn * 12n / 10n,
       ],
     });
@@ -52,6 +54,7 @@ export function useSwap(
     setStep(2)
     const hash = await writeContractAsync({
       abi: ABIs["SwapRouter02"],
+      //@ts-ignore
       address: Contracts["SwapRouter02"],
       functionName: "exactInputSingle",
       args: [
@@ -59,6 +62,7 @@ export function useSwap(
           tokenIn: tokenInAddress,
           tokenOut: tokenOutAddress,
           fee: DefaultFee,
+          //@ts-ignore
           recipient: address,
           deadline: Math.floor(Date.now() / 1000) + 60 * 20,
           amountIn: amountIn.toString(),

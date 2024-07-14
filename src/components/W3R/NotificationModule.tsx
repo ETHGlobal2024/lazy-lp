@@ -49,25 +49,24 @@ export default function NotificationModule() {
 
     return (
         <>
-            <main>
-                {w3iClientIsLoading ? (
-                    <div>Loading W3I Client</div>
-                ) : (
-                    <div>
-                        <div className="flex flex-row gap-4 justify-center items-center">
-                            <button onClick={handleRegistration} disabled={isRegistered}>
-                                {isRegistered ? 'Registered' : 'Register'}
-                            </button>
-                            <button
-                                onClick={() => (isSubscribed ? unsubscribe() : subscribe())}
-                                disabled={isSubscribing || isUnsubscribing}
-                            >
-                                {isSubscribed ? 'Unsubscribe' : 'Subscribe'}
-                            </button>
-                        </div>
+            {w3iClientIsLoading ? (
+                <div>Loading W3I Client</div>
+            ) : (
+                <div>
+                    <div className="flex flex-row gap-4 justify-center items-center ">
+                        <button onClick={handleRegistration} disabled={isRegistered}>
+                            {isRegistered ? 'Registered' : 'Register'}
+                        </button>
+                        <button
+                            onClick={() => (isSubscribed ? unsubscribe() : subscribe())}
+                            disabled={isSubscribing || isUnsubscribing}
+                        >
+                            {isSubscribed ? 'Unsubscribe' : 'Subscribe'}
+                        </button>
                     </div>
-                )}
-            </main>
+                </div>
+            )}
+
         </>
     )
 }

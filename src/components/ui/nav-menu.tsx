@@ -11,8 +11,10 @@ const Navbar: React.FC = () => {
             <p className="text-2xl font-bold">
                 LAZY PEGGY
             </p>
-            <NotificationModule/>
-            <ConnectButton/>
+            <div className="flex flex-row justify-center items-center gap-4">
+                <NotificationModule/>
+                <ConnectButton/>
+            </div>
         </nav>
     );
 };
