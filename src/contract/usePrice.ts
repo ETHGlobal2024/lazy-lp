@@ -54,7 +54,7 @@ export function usePrice(
     const route = new Route([pool], tokenIn, tokenOut);
     const price = route.midPrice.toSignificant(6);
 
-    console.log(`Price of tokenIn in terms of tokenOut: ${price}`);
+    // console.log(`Price of tokenIn in terms of tokenOut: ${price}`);
 
     return price
   }
