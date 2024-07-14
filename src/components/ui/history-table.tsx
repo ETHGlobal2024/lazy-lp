@@ -42,7 +42,7 @@ const HistoryTable = () => {
                         <th className="py-2 px-4 text-left">Price (USD)</th>
                         <th className="py-2 px-4 text-left">Position Time</th>
                         <th className="py-2 px-4 text-left">Current Range</th>
-                        <th className="py-2 px-4 text-left">Old Range (7d)</th>
+                        <th className="py-2 px-4 text-left">Old Range ({selectedPeriod})</th>
                     </tr>
                     </thead>
                     <tbody>

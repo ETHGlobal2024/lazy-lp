@@ -10,7 +10,6 @@ import SuccessStakeModal from "@/components/modals/SuccesStakeModal";
 import {useRouter} from "next/navigation";
 import {useAddLiquidity, usePoolInfo} from "@/contract/useAddLiquidity";
 import {Contracts} from "../contract/abi";
-import {usePrice} from "../contract/usePrice";
 
 export default function Main() {
 

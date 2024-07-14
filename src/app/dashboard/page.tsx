@@ -12,7 +12,7 @@ import {Card} from "@/components/ui/card";
 import SwapButton from "@/components/W3R/SwapButton";
 import {useAddLiquidity, usePoolInfo} from "@/contract/useAddLiquidity";
 import {Contracts} from "@/contract/abi";
-import {set} from "zod";
+import {usePrice} from "@/contract/usePrice";
 
 const Dashboard = () => {
 
@@ -37,18 +37,18 @@ const Dashboard = () => {
         0.9, 1.1, BigInt(ethAmount * 10 ** 18)
     );
 
+    const price = usePrice(Contracts["WETH"], Contracts["EETH"]);
+    const formattedPrice = Number(price).toFixed(4);
+
     return (
         <main className="container mx-auto px-8 py-4">
             <div className="flex flex-row gap-4">
                 <Card className="bg-background rounded-xl overflow-hidden p-2 flex flex-grow">
                     <div className="flex flex-grow flex-col">
                         <div className="grid grid-cols-3 gap-2">
-                            <DashboardMetricCard title="CIRCULATING SUPPLY" value="$0.9831"/>
-                            <DashboardMetricCard title="SPOT PRICE" value="$0.9831"/>
-                            <DashboardMetricCard title="24H TRADING VOLUME" value="$2M"/>
-                            <DashboardMetricCard title="AVG PRICE (24H)" value="$0.9803"/>
-                            <DashboardMetricCard title="MAX PRICE (24H)" value="$0.9803"/>
-                            <DashboardMetricCard title="MIN PRICE (24H)" value="$0.9803"/>
+                            <DashboardMetricCard title="CURRENT PRICE" value={`$${formattedPrice}`}/>
+                            <DashboardMetricCard title="LOWER LIMIT" value="$0.9803"/>
+                            <DashboardMetricCard title="UPPER LIMIT" value="$0.9803"/>
                         </div>
                         <div className="my-2 mx-1">
                             <ChartExample/>
