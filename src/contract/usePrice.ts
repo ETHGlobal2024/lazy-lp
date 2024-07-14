@@ -23,12 +23,14 @@ export function usePrice(
   const readResult = useReadContracts({
     contracts: [
       {
+        //@ts-ignore
         address: poolAddress,
         abi: ABIs["UniswapV3Pool"],
         functionName: "liquidity",
         args: [],
       },
       {
+        //@ts-ignore
         address: poolAddress,
         abi: ABIs["UniswapV3Pool"],
         functionName: "slot0",
@@ -48,6 +50,7 @@ export function usePrice(
     const pool = new Pool(
       tokenIn, tokenOut, fee, // Fee tier, 0.3%
       sqrtPriceX96.toString(),
+        //@ts-ignore
       liquidity.toString(), tick as number
     );
 
